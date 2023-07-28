@@ -8,6 +8,10 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 
 use App\PageTemplates;
+use App\Http\Controllers\Admin\Crud\PageCrud;
+use Backpack\Pages\app\Interfaces\PageCrudInterface;
+// use PageCrud;
+
 use Str;
 /**
  * Class BannerCrudController
@@ -22,7 +26,6 @@ class PageCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     
-    use \App\Http\Controllers\Admin\Traits\PageCrud;
     use PageTemplates;
 
     public function setup()
@@ -50,6 +53,10 @@ class PageCrudController extends CrudController
           'name' => 'slug',
           'label' => trans('pages.slug'),
       ]);
+
+      if($this->isPageCrudClass()){
+        PageCrud::setupListOperation($this->crud);
+      }
     }
 
     protected function setupCreateOperation()
@@ -63,7 +70,9 @@ class PageCrudController extends CrudController
 
         $this->crud->setValidation(PageRequest::class);
 
-      $this->createOperation();
+        if($this->isPageCrudClass()){
+          PageCrud::setupCreateOperation($this->crud);
+        }
     }
 
     protected function setupUpdateOperation()
@@ -75,6 +84,10 @@ class PageCrudController extends CrudController
       $this->useTemplate($template);
 
       $this->crud->setValidation(PageRequest::class);
+
+      if($this->isPageCrudClass()){
+        PageCrud::setupUpdateOperation($this->crud);
+      }
     }
 
     // -----------------------------------------------
@@ -191,5 +204,12 @@ class PageCrudController extends CrudController
         }
 
         return $templates_array;
+    }
+
+
+    public function isPageCrudClass() {
+      return file_exists(base_path() . '/app/Http/Controllers/Admin/Crud/PageCrud.php') && 
+              class_exists('App\Http\Controllers\Admin\Crud\PageCrud') && 
+              isset(class_implements(new PageCrud)['Backpack\Pages\app\Interfaces\PageCrudInterface']);
     }
 }

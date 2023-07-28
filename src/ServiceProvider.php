@@ -42,10 +42,16 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
           __DIR__.'/routes/api/pages.php' => resource_path('/routes/backpack/pages/pages.php'),
       ], 'routes');
 
+      $this->publishes([
+        __DIR__.'/app/Http/Controllers/Admin/Stubs' => base_path('app/Http/Controllers/Admin/Crud'),
+      ], 'traits');
 
-      // $this->publishes([
-      //   __DIR__.'/app/Traits/Controllers/Admin' => base_path('app/Http/Controllers/Admin/Traits'),
-      // ], 'traits');
+      // if(class_exists('App\Http\Controllers\Admin\Traits\PageCrud')){
+      // dd('exist App\Http\Controllers\Admin\Traits\PageCrud');
+      // }
+
+      echo 'boot !!!';
+      //App::bind('App\Http\Controllers\Admin\Traits\PageCrud', 'PageCrud');
     }
 
     public function register()
