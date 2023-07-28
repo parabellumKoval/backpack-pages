@@ -7,8 +7,8 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 
-use App\PageTemplates;
 use App\Http\Controllers\Admin\Crud\PageCrud;
+use App\PageTemplates\Template;
 use Backpack\Pages\app\Interfaces\PageCrudInterface;
 // use PageCrud;
 
@@ -26,8 +26,6 @@ class PageCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     
-    use PageTemplates;
-
     public function setup()
     {
         $this->crud->setModel('Backpack\Pages\app\Models\Page');
@@ -61,18 +59,20 @@ class PageCrudController extends CrudController
 
     protected function setupCreateOperation()
     {
-        // Note:
-        // - default fields, that all templates are using, are set using $this->addDefaultPageFields();
-        // - template-specific fields are set per-template, in the PageTemplates trait;
+      // Note:
+      // - default fields, that all templates are using, are set using $this->addDefaultPageFields();
+      // - template-specific fields are set per-template, in the PageTemplates trait;
 
-        $this->addDefaultPageFields(\Request::input('template'));
-        $this->useTemplate(\Request::input('template'));
+      $template = \Request::input('template') ?? 'common';
 
-        $this->crud->setValidation(PageRequest::class);
+      $this->addDefaultPageFields(\Request::input('template'));
+      $this->useTemplate($template);
 
-        if($this->isPageCrudClass()){
-          PageCrud::setupCreateOperation($this->crud);
-        }
+      $this->crud->setValidation(PageRequest::class);
+
+      if($this->isPageCrudClass()){
+        PageCrud::setupCreateOperation($this->crud);
+      }
     }
 
     protected function setupUpdateOperation()
@@ -101,56 +101,58 @@ class PageCrudController extends CrudController
      */
     public function addDefaultPageFields($template = false)
     {
+      if($this->isTemplatesClass() && count($this->getTemplatesArray())){
         $this->crud->addField([
-            'name' => 'template',
-            'label' => trans('pages.template'),
-            'type' => 'select_page_template',
-            'view_namespace' => file_exists(resource_path('views/vendor/backpack/crud/fields/select_page_template.blade.php')) ? null : 'pagemanager::fields',
-            'options' => $this->getTemplatesArray(),
-            'value' => $template,
-            'allows_null' => false,
-            'tab' => 'Основное'
+          'name' => 'template',
+          'label' => trans('pages.template'),
+          'type' => 'select_page_template',
+          'view_namespace' => file_exists(resource_path('views/vendor/backpack/crud/fields/select_page_template.blade.php')) ? null : 'pagemanager::fields',
+          'options' => $this->getTemplatesArray(),
+          'value' => $template,
+          'allows_null' => false,
+          'tab' => 'Основное'
         ]);
+      }
 
-        $this->crud->addField([
-            'name' => 'is_active',
-            'label' => trans('pages.page_is_active'),
-            'type' => 'checkbox',
-            'tab' => 'Основное'
-        ]);
+      $this->crud->addField([
+        'name' => 'is_active',
+        'label' => trans('pages.page_is_active'),
+        'type' => 'checkbox',
+        'tab' => 'Основное'
+      ]);
 
-        $this->crud->addField([
-            'name' => 'title',
-            'label' => trans('pages.page_title'),
-            'type' => 'text',
-            'tab' => 'Основное'
-        ]);
+      $this->crud->addField([
+        'name' => 'title',
+        'label' => trans('pages.page_title'),
+        'type' => 'text',
+        'tab' => 'Основное'
+      ]);
 
-        $this->crud->addField([
-            'name' => 'slug',
-            'label' => trans('pages.page_slug'),
-            'type' => 'text',
-            'hint' => trans('pages.page_slug_hint'),
-            'tab' => 'Основное'
-        ]);
+      $this->crud->addField([
+        'name' => 'slug',
+        'label' => trans('pages.page_slug'),
+        'type' => 'text',
+        'hint' => trans('pages.page_slug_hint'),
+        'tab' => 'Основное'
+      ]);
 
 
-        $this->crud->addField([
-            'name' => 'meta_title',
-            'label' => trans('pages.meta_title'),
-            'fake' => true,
-            'store_in' => 'seo',
-            'tab' => 'SEO'
-        ]);
+      $this->crud->addField([
+        'name' => 'meta_title',
+        'label' => trans('pages.meta_title'),
+        'fake' => true,
+        'store_in' => 'seo',
+        'tab' => 'SEO'
+      ]);
 
-        $this->crud->addField([
-              'name' => 'meta_description',
-              'label' => trans('pages.meta_description'),
-              'type' => 'textarea',
-              'fake' => true,
-              'store_in' => 'seo',
-              'tab' => 'SEO'
-          ]);
+      $this->crud->addField([
+        'name' => 'meta_description',
+        'label' => trans('pages.meta_description'),
+        'type' => 'textarea',
+        'fake' => true,
+        'store_in' => 'seo',
+        'tab' => 'SEO'
+      ]);
     }
 
     /**
@@ -160,34 +162,9 @@ class PageCrudController extends CrudController
      */
     public function useTemplate($template_name = false)
     {
-        $templates = $this->getTemplates();
-
-        // set the default template
-        if ($template_name == false) {
-            $template_name = $templates[0]->name;
-        }
-
-        // actually use the template
-        if ($template_name) {
-            $this->{$template_name}();
-        }
-    }
-
-    /**
-     * Get all defined templates.
-     */
-    public function getTemplates($template_name = false)
-    {
-        $templates_array = [];
-
-        $templates_trait = new \ReflectionClass('App\PageTemplates');
-        $templates = $templates_trait->getMethods(\ReflectionMethod::IS_PRIVATE);
-
-        if (! count($templates)) {
-            abort(503, trans('pages.template_not_found'));
-        }
-
-        return $templates;
+      if($this->isTemplatesClass()){
+        Template::useTemplate($template_name, $this->crud);
+      }
     }
 
     /**
@@ -197,18 +174,19 @@ class PageCrudController extends CrudController
      */
     public function getTemplatesArray()
     {
-        $templates = $this->getTemplates();
-
-        foreach ($templates as $template) {
-            $templates_array[$template->name] = str_replace('_', ' ', Str::title($template->name));
-        }
-
-        return $templates_array;
+      if($this->isTemplatesClass()){
+        return Template::$templates;
+      }
     }
 
 
+    public function isTemplatesClass() {
+      return file_exists(base_path('/app/PageTemplates/Template.php')) && 
+              class_exists('App\PageTemplates\Template');
+    }
+
     public function isPageCrudClass() {
-      return file_exists(base_path() . '/app/Http/Controllers/Admin/Crud/PageCrud.php') && 
+      return file_exists(base_path('/app/Http/Controllers/Admin/Crud/PageCrud.php')) && 
               class_exists('App\Http\Controllers\Admin\Crud\PageCrud') && 
               isset(class_implements(new PageCrud)['Backpack\Pages\app\Interfaces\PageCrudInterface']);
     }
