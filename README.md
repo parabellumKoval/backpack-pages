@@ -28,6 +28,11 @@ php artisan migrate
 php artisan vendor:publish --provider="Backpack\Pages\ServiceProvider" --tag="config"
 ```
 
+#### Translation Files
+```bash
+php artisan vendor:publish --provider="Backpack\Pages\ServiceProvider" --tag="trans"
+```
+
 #### Views File
 ```bash
 php artisan vendor:publish --provider="Backpack\Pages\ServiceProvider" --tag="views"
@@ -41,6 +46,16 @@ php artisan vendor:publish --provider="Backpack\Pages\ServiceProvider" --tag="mi
 #### Routes File
 ```bash
 php artisan vendor:publish --provider="Backpack\Pages\ServiceProvider" --tag="routes"
+```
+
+#### Page templates Files
+```bash
+php artisan vendor:publish --provider="Backpack\Pages\ServiceProvider" --tag="temps"
+```
+
+#### Stub File
+```bash
+php artisan vendor:publish --provider="Backpack\Pages\ServiceProvider" --tag="stub"
 ```
 
 ## Usage
@@ -57,5 +72,5 @@ instead of using the issue tracker.
 
 ## Credits
 
-- [](https://github.com/parabellumKoval/backpack-pages)
+- [parabellumKoval](https://github.com/parabellumKoval/backpack-pages)
 - [All contributors](https://github.com/parabellumKoval/backpack-pages/graphs/contributors)

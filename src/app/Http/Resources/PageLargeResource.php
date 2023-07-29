@@ -18,9 +18,9 @@ class PageLargeResource extends JsonResource
 		    'id' => $this->id,
 		    'title' => $this->title,
 		    'slug' => $this->slug,
-		    'excerpt' => $this->excerpt,
-		    'content' => $this->content,
-		    'image' => $this->image,
+		    'template' => $this->template,
+		    'is_active' => $this->is_active,
+		    'extras' => $this->extras,
         'seo' => $this->seo
       ];
     }

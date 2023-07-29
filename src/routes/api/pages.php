@@ -17,5 +17,5 @@ use Backpack\Pages\app\Http\Controllers\Api\PageController;
 */
 
 Route::prefix('api/pages')->controller(PageController::class)->group(function () {
-  Route::get('{slug}', 'show')->middleware('api');
+  Route::get('{slug_or_template}', 'show')->middleware('api');
 });

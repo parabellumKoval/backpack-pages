@@ -33,17 +33,19 @@ class Page extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'pages';
+    protected $table = 'ak_pages';
     protected $primaryKey = 'id';
     public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = ['template', 'title', 'slug', 'content', 'extras'];
+    protected $fillable = ['template', 'title', 'slug', 'content', 'extras', 'seo', 'is_active'];
     // protected $hidden = [];
     // protected $dates = [];
-    protected $fakeColumns = ['extras'];
+    protected $fakeColumns = ['extras', 'seo'];
     protected $casts = [
-        'extras' => 'array',
+        // 'extras' => 'array',
     ];
+
+    protected $translatable = ['title', 'extras', 'seo'];
 
     /**
      * Return the sluggable configuration array for this model.
@@ -87,11 +89,16 @@ class Page extends Model
     |--------------------------------------------------------------------------
     */
 
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------
     */
+    public function scopeActive($query)
+    {
+      return $query->where('is_active', true);
+    }
 
     /*
     |--------------------------------------------------------------------------

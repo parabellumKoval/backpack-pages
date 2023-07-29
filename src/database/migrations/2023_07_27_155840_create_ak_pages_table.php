@@ -18,11 +18,10 @@ class CreateAkPagesTable extends Migration
             $table->string('template');
             $table->json('title');
             $table->string('slug');
-            $table->json('content')->nullable();
+            $table->boolean('is_active')->default(1);
             $table->json('extras')->nullable();
             $table->json('seo')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -33,6 +32,6 @@ class CreateAkPagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ak_pages');
+      Schema::dropIfExists('ak_pages');
     }
 }
