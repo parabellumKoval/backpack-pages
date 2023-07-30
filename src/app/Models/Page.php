@@ -116,6 +116,22 @@ class Page extends Model
         return $this->title;
     }
 
+    public function getExtrasDecodedAttribute() {
+      if(empty($this->extras))
+        return null;
+      
+      $data = json_decode($this->extras, true);
+      return $data;      
+    }
+
+    public function getSeoDecodedAttribute() {
+      if(empty($this->seo))
+        return null;
+      
+      $data = json_decode($this->seo, true);
+      return $data;      
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS

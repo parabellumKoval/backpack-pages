@@ -20,8 +20,8 @@ class PageLargeResource extends JsonResource
 		    'slug' => $this->slug,
 		    'template' => $this->template,
 		    'is_active' => $this->is_active,
-		    'extras' => $this->extras,
-        'seo' => $this->seo
+		    'extras' => $this->extrasDecoded,
+        'seo' => $this->seoDecoded
       ];
     }
 }
