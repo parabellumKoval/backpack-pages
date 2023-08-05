@@ -21,9 +21,9 @@ class Template {
   {
       $crud->addField([
         'name' => 'content',
-        'label' => trans('pages.content'),
+        'label' => trans('ak_pages::pages.content'),
         'type' => 'ckeditor',
-        'placeholder' => trans('pages.content_placeholder'),
+        'placeholder' => trans('ak_pages::pages.content_placeholder'),
         'fake' => true,
         'store_in' => 'extras',
         'tab' => 'Основное',

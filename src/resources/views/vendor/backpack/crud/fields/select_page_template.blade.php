@@ -70,7 +70,7 @@
                 $("#select_template").change(function(e) {
                     swal({
                         title: "{!! trans('backpack::base.notice') !!}",
-                        text: "{!! trans('parabellumkoval::pages.change_template_confirmation') !!}",
+                        text: "{!! trans('ak_pages::pages.change_template_confirmation') !!}",
                         icon: "warning",
                         buttons: true,
                     }).then((confirmation) => {

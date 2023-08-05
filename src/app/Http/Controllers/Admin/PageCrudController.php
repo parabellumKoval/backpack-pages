@@ -37,19 +37,19 @@ class PageCrudController extends CrudController
     {   
       $this->crud->addColumn([
           'name' => 'title',
-          'label' => trans('parabellumkoval::pages.name'),
+          'label' => trans('ak_pages::pages.name'),
       ]);
       
       $this->crud->addColumn([
           'name' => 'template',
-          'label' => trans('parabellumkoval::pages.template'),
+          'label' => trans('ak_pages::pages.template'),
           'type' => 'model_function',
           'function_name' => 'getTemplateName',
       ]);
 
       $this->crud->addColumn([
           'name' => 'slug',
-          'label' => trans('parabellumkoval::pages.slug'),
+          'label' => trans('ak_pages::pages.slug'),
       ]);
 
       if($this->isPageCrudClass()){
@@ -104,7 +104,7 @@ class PageCrudController extends CrudController
       if($this->isTemplatesClass() && count($this->getTemplatesArray())){
         $this->crud->addField([
           'name' => 'template',
-          'label' => trans('parabellumkoval::pages.template'),
+          'label' => trans('ak_pages::pages.template'),
           'type' => 'select_page_template',
           'view_namespace' => file_exists(resource_path('views/vendor/backpack/crud/fields/select_page_template.blade.php')) ? null : 'backpack-pages::crud.fields',
           'options' => $this->getTemplatesArray(),
@@ -116,30 +116,30 @@ class PageCrudController extends CrudController
 
       $this->crud->addField([
         'name' => 'is_active',
-        'label' => trans('parabellumkoval::pages.page_is_active'),
+        'label' => trans('ak_pages::pages.page_is_active'),
         'type' => 'checkbox',
         'tab' => 'Основное'
       ]);
 
       $this->crud->addField([
         'name' => 'title',
-        'label' => trans('parabellumkoval::pages.page_title'),
+        'label' => trans('ak_pages::pages.page_title'),
         'type' => 'text',
         'tab' => 'Основное'
       ]);
 
       $this->crud->addField([
         'name' => 'slug',
-        'label' => trans('parabellumkoval::pages.page_slug'),
+        'label' => trans('ak_pages::pages.page_slug'),
         'type' => 'text',
-        'hint' => trans('parabellumkoval::pages.page_slug_hint'),
+        'hint' => trans('ak_pages::pages.page_slug_hint'),
         'tab' => 'Основное'
       ]);
 
 
       $this->crud->addField([
         'name' => 'meta_title',
-        'label' => trans('parabellumkoval::pages.meta_title'),
+        'label' => trans('ak_pages::pages.meta_title'),
         'fake' => true,
         'store_in' => 'seo',
         'tab' => 'SEO'
@@ -147,7 +147,7 @@ class PageCrudController extends CrudController
 
       $this->crud->addField([
         'name' => 'meta_description',
-        'label' => trans('parabellumkoval::pages.meta_description'),
+        'label' => trans('ak_pages::pages.meta_description'),
         'type' => 'textarea',
         'fake' => true,
         'store_in' => 'seo',

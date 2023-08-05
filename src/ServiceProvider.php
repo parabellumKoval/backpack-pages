@@ -9,7 +9,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function boot()
     {
       // Translations
-      $this->loadTranslationsFrom(__DIR__.'/resources/lang', 'parabellumkoval');
+      $this->loadTranslationsFrom(__DIR__.'/resources/lang', 'ak_pages');
 
       $this->publishes([
           __DIR__.'/resources/lang' => resource_path('lang/vendor/parabellumkoval'),
